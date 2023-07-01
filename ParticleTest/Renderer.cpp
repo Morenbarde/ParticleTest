@@ -98,8 +98,8 @@ void Renderer::pollEvents()
 			particles.addParticle(this->mousePos.x - 5, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
 			particles.addParticle(this->mousePos.x + 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
 			particles.addParticle(this->mousePos.x - 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x, this->mousePos.y + 1, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x, this->mousePos.y - 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
 		}
 	}
 }
