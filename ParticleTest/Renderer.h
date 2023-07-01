@@ -32,6 +32,8 @@ private:
 	sf::Clock clock;
 	sf::Time time;
 
+	int particles_per_click = 2;
+
 	std::stringstream stream;
 	std::string friction_str;
 
@@ -57,6 +59,7 @@ public:
 	
 	//Update functions
 	void pollEvents();
+	void incrementPPC(int i);
 
 	void update();
 	void render();

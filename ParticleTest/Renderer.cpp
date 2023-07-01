@@ -100,6 +100,12 @@ void Renderer::pollEvents()
 				stream << std::fixed << std::setprecision(3) << particles.getFriction();
 				friction_str = stream.str();
 			}
+			if (event.key.code == sf::Keyboard::PageUp) {
+				incrementPPC(1);
+			}
+			if (event.key.code == sf::Keyboard::PageDown) {
+				incrementPPC(-1);
+			}
 			break;
 		case sf::Event::KeyReleased:
 			particles.accelerateParticles(0, 0);
@@ -110,15 +116,35 @@ void Renderer::pollEvents()
 			int r = rand() % 255;
 			int g = rand() % 255;
 			int b = rand() % 255;
-			particles.addParticle(this->mousePos.x + 5, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
+
+			if (particles_per_click == 8) {
+				particles.addParticle(this->mousePos.x + 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
+				particles.addParticle(this->mousePos.x - 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
+				particles.addParticle(this->mousePos.x, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
+				particles.addParticle(this->mousePos.x, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
+			}
+			if (particles_per_click >= 4) {
+				particles.addParticle(this->mousePos.x + 5, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
+				particles.addParticle(this->mousePos.x - 5, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
+			} 
+			if (particles_per_click >= 2) {
+				particles.addParticle(this->mousePos.x - 5, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
+			}
 			particles.addParticle(this->mousePos.x + 5, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x - 5, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x - 5, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));
-			/*particles.addParticle(this->mousePos.x + 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x - 5, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x, this->mousePos.y + 5, 0, 0, sf::Color(r, g, b, 255));
-			particles.addParticle(this->mousePos.x, this->mousePos.y - 5, 0, 0, sf::Color(r, g, b, 255));*/
+			
+			
+			
 		}
+	}
+}
+
+void Renderer::incrementPPC(int i)
+{
+	if (i == -1 && this->particles_per_click != 1) {
+		particles_per_click /= 2;
+	}
+	if (i == 1 && this->particles_per_click != 8) {
+		particles_per_click *= 2;
 	}
 }
 
@@ -151,7 +177,7 @@ void Renderer::render()
 
 		this->game_info.setString("Number of Particles: " + std::to_string(particles.getNumOfParticles()) + "    Mouse Strength : "
 			+ std::to_string(particles.getMouseStrength()) + "    Mouse Radius: " + std::to_string(particles.getMouseRadius())
-			+ "    Friction: " + friction_str + "    FPS: " + std::to_string(fps));
+			+ "    Friction: " + friction_str + "    PPC: " + std::to_string(particles_per_click) + "    FPS: " + std::to_string(fps));
 		this->window->draw(game_info);
 
 		this->window->display();
