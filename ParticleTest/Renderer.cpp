@@ -49,14 +49,17 @@ void Renderer::pollEvents()
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 			//sf::Color particle_color = sf::Color::White;
-			particles.addParticle(this->mousePos.x + 1, this->mousePos.y + 1, 0, 0);
-			particles.addParticle(this->mousePos.x + 1, this->mousePos.y - 1, 0, 0);
-			particles.addParticle(this->mousePos.x - 1, this->mousePos.y + 1, 0, 0);
-			particles.addParticle(this->mousePos.x - 1, this->mousePos.y - 1, 0, 0);
-			particles.addParticle(this->mousePos.x + 1, this->mousePos.y, 0, 0);
-			particles.addParticle(this->mousePos.x - 1, this->mousePos.y, 0, 0);
-			particles.addParticle(this->mousePos.x, this->mousePos.y + 1, 0, 0);
-			particles.addParticle(this->mousePos.x, this->mousePos.y - 1, 0, 0);
+			int r = rand() % 255;
+			int g = rand() % 255;
+			int b = rand() % 255;
+			particles.addParticle(this->mousePos.x + 1, this->mousePos.y + 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x + 1, this->mousePos.y - 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x - 1, this->mousePos.y + 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x - 1, this->mousePos.y - 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x + 1, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x - 1, this->mousePos.y, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x, this->mousePos.y + 1, 0, 0, sf::Color(r, g, b, 255));
+			particles.addParticle(this->mousePos.x, this->mousePos.y - 1, 0, 0, sf::Color(r, g, b, 255));
 		}
 	}
 }
@@ -75,7 +78,6 @@ void Renderer::render()
 		this->particle_list = particles.getFirstParticle();
 		this->window->clear(sf::Color::Black);
 		for (int i = 0; i < this->num_of_particles; i++) {
-			drawable = sf::CircleShape(2.0);
 			drawable.setFillColor(this->particle_list->color);
 			drawable.setPosition(round(this->particle_list->x), round(this->particle_list->y));
 			this->window->draw(drawable);

@@ -15,18 +15,30 @@ PARTICLE_T* Particles::getFirstParticle()
 
 bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity, sf::Color color)
 {
-	PARTICLE_T particle;
 	bool possibility = false;
 
 	if (this->num_of_particles < MAX_PARTICLES) {
+
+		if (this->num_of_particles == 0) {
+			this->first_particle = new PARTICLE_T;
+			this->last_particle = first_particle;
+		}
+		else {
+			this->last_particle->next = new PARTICLE_T;
+			this->last_particle->next->prev = last_particle;
+			this->last_particle = this->last_particle->next;
+		}
+
+		this->last_particle->x = x;
+		this->last_particle->y = y;
+		this->last_particle->x_velocity = x_velocity;
+		this->last_particle->y_velocity = y_velocity;
+		this->last_particle->color = color;
+
 		this->num_of_particles += 1;
-		particle.x = x;
-		particle.y = y;
-		particle.x_velocity = x_velocity;
-		particle.y_velocity = y_velocity;
-		particle.color = color;
 		possibility = true;
 	}
+	std::cout << "Number of Particles: " << num_of_particles << "\n";
 
 	return possibility;
 }

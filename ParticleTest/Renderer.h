@@ -24,7 +24,7 @@ private:
 	Particles particles;
 	PARTICLE_T* particle_list;
 
-	sf::CircleShape drawable;
+	sf::CircleShape drawable = sf::CircleShape(2.0);
 
 	sf::Vector2i mousePos;
 
