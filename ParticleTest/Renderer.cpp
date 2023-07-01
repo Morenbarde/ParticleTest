@@ -3,11 +3,20 @@
 void Renderer::initVariables()
 {
 	this->running = true;
+
+	this->font.loadFromFile("Game_Of_Squids.ttf");
+
+	this->game_info.setFont(font);
+	this->game_info.setString("Number of Particles: 0    Mouse Strength: " + std::to_string(particles.getMouseStrength()) + 
+		"    Mouse Radius: " + std::to_string(particles.getMouseRadius()));
+	this->game_info.setCharacterSize(20);
+	this->game_info.setStyle(sf::Text::Bold);
+	this->game_info.setPosition(50, this->window_height-30);
 }
 
 void Renderer::initWindow()
 {
-	this->window_width = 1800;
+	this->window_width = 1600;
 	this->window_height = 900;
 
 	this->videoMode.height = this->window_height;
@@ -19,14 +28,15 @@ void Renderer::initWindow()
 
 Renderer::Renderer()
 {
-	this->initVariables();
 	this->initWindow();
+	this->initVariables();
 }
 
+//TODO When Running this, exception occurs, don't know why
 Renderer::~Renderer()
 {
-	this->running = false;
 	this->window->close();
+	this->running = false;
 }
 
 bool Renderer::isRunning()
@@ -41,10 +51,40 @@ void Renderer::pollEvents()
 		switch (this->event.type)
 		{
 		case sf::Event::Closed:
-			this->~Renderer();
+			this->window->close();
+			this->running = false;
 			break;
 		case sf::Event::KeyPressed:
+			if (event.key.code == sf::Keyboard::R) {
+				particles.resetParticles();
+			}
+			if (event.key.code == sf::Keyboard::W) {
+				particles.accelerateParticles(0, -0.01);
+			}
+			if (event.key.code == sf::Keyboard::A) {
+				particles.accelerateParticles(-0.01, 0);
+			}
+			if (event.key.code == sf::Keyboard::S) {
+				particles.accelerateParticles(0, 0.01);
+			}
+			if (event.key.code == sf::Keyboard::D) {
+				particles.accelerateParticles(0.01, 0);
+			}
+			if (event.key.code == sf::Keyboard::Up) {
+				particles.incrementMouseStrength(2);
+			}
+			if (event.key.code == sf::Keyboard::Down) {
+				particles.incrementMouseStrength(-2);
+			}
+			if (event.key.code == sf::Keyboard::Left) {
+				particles.incrementMouseRadius(-10);
+			}
+			if (event.key.code == sf::Keyboard::Right) {
+				particles.incrementMouseRadius(10);
+			}
 			break;
+		case sf::Event::KeyReleased:
+			particles.accelerateParticles(0, 0);
 		}
 
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
@@ -83,6 +123,11 @@ void Renderer::render()
 			this->window->draw(drawable);
 			this->particle_list = this->particle_list->next;
 		}
+
+		this->game_info.setString("Number of Particles: " + std::to_string(particles.getNumOfParticles()) + "    Mouse Strength : " 
+			+ std::to_string(particles.getMouseStrength()) + "    Mouse Radius: " + std::to_string(particles.getMouseRadius()));
+		this->window->draw(game_info);
+
 		this->window->display();
 	}
 }

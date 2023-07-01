@@ -13,6 +13,28 @@ PARTICLE_T* Particles::getFirstParticle()
 	return this->first_particle;
 }
 
+int Particles::getMouseStrength()
+{
+	return this->MOUSE_PUSH_FORCE;
+}
+
+int Particles::getMouseRadius()
+{
+	return this->MOUSE_PUSH_RADIUS;
+}
+
+void Particles::incrementMouseStrength(int s)
+{
+	this->MOUSE_PUSH_FORCE += s;
+	std::cout << "Mouse Force: " << MOUSE_PUSH_FORCE << "\n";
+}
+
+void Particles::incrementMouseRadius(int r)
+{
+	this->MOUSE_PUSH_RADIUS += r;
+	std::cout << "Mouse Radius: " << MOUSE_PUSH_RADIUS << "\n";
+}
+
 bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity, sf::Color color)
 {
 	bool possibility = false;
@@ -72,6 +94,18 @@ bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity)
 	return possibility;
 }
 
+void Particles::accelerateParticles(float x, float y)
+{
+	if (x == 0 && y == 0) {
+		this->horizontal_acceleration = 0;
+		this->vertical_acceleration = 0;
+	}
+	else {
+		this->horizontal_acceleration += x;
+		this->vertical_acceleration += y;
+	}
+}
+
 void Particles::resetParticles()
 {
 	this->num_of_particles = 0;
@@ -96,20 +130,31 @@ void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos)
 			acceleration = MOUSE_PUSH_FORCE / distance_to_mouse;
 			this->current_particle->x_velocity += xnormal * acceleration;
 			this->current_particle->y_velocity += ynormal * acceleration;
-		} else {
-			this->current_particle->x_velocity -= this->current_particle->x_velocity * 0.008;
-			this->current_particle->y_velocity -= this->current_particle->y_velocity * 0.008;
 		}
+		this->current_particle->x_velocity = this->current_particle->x_velocity - (this->current_particle->x_velocity * 0.008)
+			+ this->horizontal_acceleration;
+		this->current_particle->y_velocity = this->current_particle->y_velocity - (this->current_particle->y_velocity * 0.008)
+			+ this->vertical_acceleration;
 
 		this->current_particle->x += this->current_particle->x_velocity;
 		this->current_particle->y += this->current_particle->y_velocity;
 
-		if (this->current_particle->x > (window_x - 20) || this->current_particle->x < 20) {
+		if (this->current_particle->x > (window_x - 20)) {
 			this->current_particle->x_velocity *= (-1);
+			this->current_particle->x = window_x - 20;
+		}
+		else if (this->current_particle->x < 20) {
+			this->current_particle->x_velocity *= (-1);
+			this->current_particle->x = 20;
 		}
 
-		if (this->current_particle->y > (window_y - 20) || this->current_particle->y < 20) {
+		if (this->current_particle->y > (window_y - 40)) {
 			this->current_particle->y_velocity *= (-1);
+			this->current_particle->y = window_y - 40;
+		}
+		else if (this->current_particle->y < 20) {
+			this->current_particle->y_velocity *= (-1);
+			this->current_particle->y = 20;
 		}
 
 		this->current_particle = this->current_particle->next;

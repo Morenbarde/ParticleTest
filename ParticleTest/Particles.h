@@ -27,19 +27,29 @@ private:
 	float xnormal;
 	float ynormal;
 	float distance_to_mouse;
-	const float GLOBAL_DECCELERATION = 2;
-	const float MOUSE_PUSH_RADIUS = 200;
-	const float MOUSE_PUSH_FORCE = 20;
+	float GLOBAL_DECCELERATION = 2;
+	float MOUSE_PUSH_RADIUS = 200;
+	float MOUSE_PUSH_FORCE = 20;
 	float acceleration;
+	float vertical_acceleration;
+	float horizontal_acceleration;
 
 public:
 
 	//Getters
 	int getNumOfParticles();
 	PARTICLE_T* getFirstParticle();
+	int getMouseStrength();
+	int getMouseRadius();
+
+	//Setters
+	void incrementMouseStrength(int s);
+	void incrementMouseRadius(int r);
 
 	bool addParticle(int x, int y, int x_velocity, int y_velocity, sf::Color color);
 	bool addParticle(int x, int y, int x_velocity, int y_velocity);
+
+	void accelerateParticles(float x, float y);
 
 	void resetParticles();
 

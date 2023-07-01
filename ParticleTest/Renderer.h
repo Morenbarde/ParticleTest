@@ -16,6 +16,9 @@ private:
 	sf::VideoMode videoMode;
 	sf::Event event;
 
+	sf::Font font;
+	sf::Text game_info;
+
 	int window_height;
 	int window_width;
 
