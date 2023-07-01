@@ -1,8 +1,5 @@
 #include "Particles.h"
 
-#include <iostream>
-#include <cmath>
-
 int Particles::getNumOfParticles()
 {
 	return this->num_of_particles;
@@ -23,6 +20,11 @@ int Particles::getMouseRadius()
 	return this->MOUSE_PUSH_RADIUS;
 }
 
+float Particles::getFriction()
+{
+	return this->friction;
+}
+
 void Particles::incrementMouseStrength(int s)
 {
 	this->MOUSE_PUSH_FORCE += s;
@@ -33,6 +35,11 @@ void Particles::incrementMouseRadius(int r)
 {
 	this->MOUSE_PUSH_RADIUS += r;
 	std::cout << "Mouse Radius: " << MOUSE_PUSH_RADIUS << "\n";
+}
+
+void Particles::incrementFriction(float f)
+{
+	this->friction += f;
 }
 
 bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity, sf::Color color)
@@ -55,7 +62,8 @@ bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity, sf::Co
 		this->last_particle->y = y;
 		this->last_particle->x_velocity = x_velocity;
 		this->last_particle->y_velocity = y_velocity;
-		this->last_particle->color = color;
+		this->last_particle->circle.setRadius(particle_radius);
+		this->last_particle->circle.setFillColor(color);
 
 		this->num_of_particles += 1;
 		possibility = true;
@@ -84,7 +92,7 @@ bool Particles::addParticle(int x, int y, int x_velocity, int y_velocity)
 		this->last_particle->y = y;
 		this->last_particle->x_velocity = x_velocity;
 		this->last_particle->y_velocity = y_velocity;
-		this->last_particle->color = sf::Color::White;
+		this->last_particle->circle.setFillColor(sf::Color::White);
 
 		this->num_of_particles += 1;
 		possibility = true;
@@ -131,9 +139,9 @@ void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos)
 			this->current_particle->x_velocity += xnormal * acceleration;
 			this->current_particle->y_velocity += ynormal * acceleration;
 		}
-		this->current_particle->x_velocity = this->current_particle->x_velocity - (this->current_particle->x_velocity * 0.008)
+		this->current_particle->x_velocity = this->current_particle->x_velocity - (this->current_particle->x_velocity * this->friction)
 			+ this->horizontal_acceleration;
-		this->current_particle->y_velocity = this->current_particle->y_velocity - (this->current_particle->y_velocity * 0.008)
+		this->current_particle->y_velocity = this->current_particle->y_velocity - (this->current_particle->y_velocity * this->friction)
 			+ this->vertical_acceleration;
 
 		this->current_particle->x += this->current_particle->x_velocity;
@@ -156,7 +164,6 @@ void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos)
 			this->current_particle->y_velocity *= (-1);
 			this->current_particle->y = 20;
 		}
-
 		this->current_particle = this->current_particle->next;
 	}
 }

@@ -8,6 +8,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
 
+#include <sstream>
+#include <iomanip>
+
 class Renderer
 {
 private:
@@ -24,10 +27,16 @@ private:
 
 	int num_of_particles;
 
+	int fps;
+	int counter;
+	sf::Clock clock;
+	sf::Time time;
+
+	std::stringstream stream;
+	std::string friction_str;
+
 	Particles particles;
 	PARTICLE_T* particle_list;
-
-	sf::CircleShape drawable = sf::CircleShape(2.0);
 
 	sf::Vector2i mousePos;
 
