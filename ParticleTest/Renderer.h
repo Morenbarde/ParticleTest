@@ -30,6 +30,7 @@ private:
 	int fps;
 	int counter;
 	sf::Clock clock;
+	sf::Clock click_clock;
 	sf::Time time;
 
 	int particles_per_click = 2;
@@ -41,6 +42,7 @@ private:
 	PARTICLE_T* particle_list;
 
 	sf::Vector2i mousePos;
+	bool mouse_not_released;
 
 	//Booleans
 	bool running;

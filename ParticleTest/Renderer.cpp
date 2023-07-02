@@ -108,7 +108,10 @@ void Renderer::pollEvents()
 			particles.accelerateParticles(0, 0);
 		}
 
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+		time = click_clock.getElapsedTime();
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && time.asSeconds() > 0.01) {
+			click_clock.restart();
 			//sf::Color particle_color = sf::Color::White;
 			int r = rand() % 255;
 			int g = rand() % 255;
