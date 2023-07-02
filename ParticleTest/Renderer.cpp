@@ -28,7 +28,7 @@ void Renderer::initWindow()
 	this->videoMode.height = this->window_height;
 	this->videoMode.width = this->window_width;
 
-	this->window = new sf::RenderWindow(this->videoMode, "Particle Tester", sf::Style::Titlebar | sf::Style::Close | sf::Style::Resize);
+	this->window = new sf::RenderWindow(this->videoMode, "Particle Tester", sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(60);
 }
 
@@ -88,23 +88,20 @@ void Renderer::pollEvents()
 			if (event.key.code == sf::Keyboard::Right) {
 				particles.incrementMouseRadius(10);
 			}
-			if (event.key.code == sf::Keyboard::Add) {
+			if (event.key.code == sf::Keyboard::Period) {
 				particles.incrementFriction(0.001);
 				stream.str("");
 				stream << std::fixed << std::setprecision(3) << particles.getFriction();
 				friction_str = stream.str();
 			}
-			if (event.key.code == sf::Keyboard::Subtract) {
+			if (event.key.code == sf::Keyboard::Comma) {
 				particles.incrementFriction(-0.001);
 				stream.str("");
 				stream << std::fixed << std::setprecision(3) << particles.getFriction();
 				friction_str = stream.str();
 			}
-			if (event.key.code == sf::Keyboard::PageUp) {
-				incrementPPC(1);
-			}
-			if (event.key.code == sf::Keyboard::PageDown) {
-				incrementPPC(-1);
+			if (event.key.code == sf::Keyboard::Space) {
+				incrementPPC();
 			}
 			break;
 		case sf::Event::KeyReleased:
@@ -138,12 +135,12 @@ void Renderer::pollEvents()
 	}
 }
 
-void Renderer::incrementPPC(int i)
+void Renderer::incrementPPC()
 {
-	if (i == -1 && this->particles_per_click != 1) {
-		particles_per_click /= 2;
+	if (this->particles_per_click >= 8) {
+		particles_per_click = 1;
 	}
-	if (i == 1 && this->particles_per_click != 8) {
+	else {
 		particles_per_click *= 2;
 	}
 }

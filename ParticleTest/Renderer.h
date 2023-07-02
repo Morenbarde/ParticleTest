@@ -59,7 +59,7 @@ public:
 	
 	//Update functions
 	void pollEvents();
-	void incrementPPC(int i);
+	void incrementPPC();
 
 	void update();
 	void render();
