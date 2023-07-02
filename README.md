@@ -7,7 +7,7 @@ Controls:
 - Left click to create particles
 - R to reset all particles
 - WASD to accelerate particles in each direction
-- Space to cycle throught particles created per click (PPC)
+- Space to cycle through particles created per click (PPC)
 - Up/Down to change force applied by the mouse
 - Left/Right to change the radius the mouse affects
 - Period/Comma to change the friction on the particles
