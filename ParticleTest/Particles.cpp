@@ -119,7 +119,7 @@ void Particles::resetParticles()
 	this->num_of_particles = 0;
 }
 
-void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos)
+void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos, double dt)
 {
 	int window_x = window_size.x;
 	int window_y = window_size.y;
@@ -136,13 +136,13 @@ void Particles::updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos)
 
 		if (distance_to_mouse <= MOUSE_PUSH_RADIUS) {
 			acceleration = MOUSE_PUSH_FORCE / distance_to_mouse;
-			this->current_particle->x_velocity += xnormal * acceleration;
-			this->current_particle->y_velocity += ynormal * acceleration;
+			this->current_particle->x_velocity += xnormal * acceleration * dt;
+			this->current_particle->y_velocity += ynormal * acceleration * dt;
 		}
-		this->current_particle->x_velocity = this->current_particle->x_velocity - (this->current_particle->x_velocity * this->friction)
-			+ this->horizontal_acceleration;
-		this->current_particle->y_velocity = this->current_particle->y_velocity - (this->current_particle->y_velocity * this->friction)
-			+ this->vertical_acceleration;
+		this->current_particle->x_velocity = (this->current_particle->x_velocity - (this->current_particle->x_velocity * this->friction)
+			+ this->horizontal_acceleration);
+		this->current_particle->y_velocity = (this->current_particle->y_velocity - (this->current_particle->y_velocity * this->friction)
+			+ this->vertical_acceleration);
 
 		this->current_particle->x += this->current_particle->x_velocity;
 		this->current_particle->y += this->current_particle->y_velocity;

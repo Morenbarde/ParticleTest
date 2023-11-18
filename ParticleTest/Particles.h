@@ -61,6 +61,6 @@ public:
 
 	void resetParticles();
 
-	void updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos);
+	void updateParticles(sf::Vector2u window_size, sf::Vector2i mousePos, double dt);
 };
 

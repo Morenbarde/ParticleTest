@@ -31,7 +31,9 @@ private:
 	int counter;
 	sf::Clock clock;
 	sf::Clock click_clock;
+	sf::Clock d_clock;
 	sf::Time time;
+	sf::Time d_time;
 
 	int particles_per_click = 2;
 

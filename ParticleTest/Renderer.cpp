@@ -29,7 +29,7 @@ void Renderer::initWindow()
 	this->videoMode.width = this->window_width;
 
 	this->window = new sf::RenderWindow(this->videoMode, "Particle Tester", sf::Style::Titlebar | sf::Style::Close);
-	this->window->setFramerateLimit(60);
+	//this->window->setFramerateLimit(60);
 }
 
 Renderer::Renderer()
@@ -152,7 +152,11 @@ void Renderer::update()
 {
 	this->mousePos = sf::Mouse::getPosition(*this->window);
 	this->pollEvents();
-	particles.updateParticles(this->window->getSize(), this->mousePos);
+
+	d_time = d_clock.getElapsedTime();
+	d_clock.restart();
+
+	particles.updateParticles(this->window->getSize(), this->mousePos, d_time.asSeconds());
 	this->num_of_particles = particles.getNumOfParticles();
 
 	counter += 1;
